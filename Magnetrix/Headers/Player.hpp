@@ -10,5 +10,4 @@ public:
 private:
 	Rectangle body;
 	Texture2D texture;
-
 };
