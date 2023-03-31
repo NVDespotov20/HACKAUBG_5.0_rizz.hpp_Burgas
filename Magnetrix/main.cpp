@@ -2,5 +2,5 @@
 
 int main()
 {
-	std::cout << "Magnetrix\n";
+	std::cout << "Hi there!\n";
 }
