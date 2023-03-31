@@ -4,7 +4,7 @@ class App
 public:
 	App();
 	~App();
-	void start();
+	void loop();
 private:
 	int grid[10][10];
 };

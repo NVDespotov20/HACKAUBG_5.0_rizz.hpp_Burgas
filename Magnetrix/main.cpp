@@ -4,5 +4,5 @@
 int main()
 {
 	App main;
-	main.start();
+	main.loop();
 }
