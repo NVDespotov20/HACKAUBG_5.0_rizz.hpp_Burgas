@@ -1,6 +1,6 @@
 #pragma once
 #include<iostream>
-#include <raylib.h>
+#include <raylib.hpp>
 
 #define NUMBER_OF_TILES 10
 
