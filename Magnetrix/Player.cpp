@@ -7,7 +7,7 @@ Player::Player() :
 }
 
 Player::Player(float zeroW, float zeroH, float WIDTH, float HEIGHT, Rectangle body, Texture2D* texture) :
-	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), body(body), speed(3)
+	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), body(body), speed(3), gravity(1.5f)
 {                             
 	if (texture)
 		this->texture = *texture;
@@ -22,6 +22,7 @@ Player::~Player()
 void Player::update(int tileSize, short dir)
 {
 	checkInput();
+	body.y += gravity;
 	checkCollision(tileSize);
 	rotate(dir);
 }

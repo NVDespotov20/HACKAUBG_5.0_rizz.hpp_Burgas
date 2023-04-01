@@ -14,6 +14,7 @@ private:
 	Rectangle body;
 	Texture2D texture;
 	int speed;
+	float gravity;
 	float zeroW, zeroH;
 	float WIDTH, HEIGHT; 
 
