@@ -9,13 +9,22 @@ App::App()
 	tileSize = GetScreenHeight() / 12.f;
 	rightOrLeft = -1;
 
-	WIDTH = (GetScreenWidth() - NUMBER_OF_TILES * tileSize) / 2;
-	HEIGHT = (GetScreenHeight() - NUMBER_OF_TILES * tileSize) / 2;
+	zeroW = (GetScreenWidth() - NUMBER_OF_TILES * tileSize) / 2;
+	zeroH = (GetScreenHeight() - NUMBER_OF_TILES * tileSize) / 2;
+
+	WIDTH = zeroW + NUMBER_OF_TILES * tileSize;
+	HEIGHT = zeroH + NUMBER_OF_TILES * tileSize;
 
 	/*for (int i = 0; i < NUMBER_OF_TILES; i++)
 		for (int j = 0; j < NUMBER_OF_TILES; j++)
 			grid[i][j] = 0;*/
 
+	pl = Player( zeroW, zeroH, WIDTH, HEIGHT,
+		Rectangle{zeroW - 1,
+		HEIGHT - 2 * tileSize,
+		(float)tileSize, 
+		(float)(tileSize * 2)
+		}, nullptr);
 
 	tileTexture = LoadTexture("assets/Tile.png");
 	bgTexture = LoadTexture("assets/bg.png");
@@ -44,6 +53,8 @@ void App::loop()
 
 		rotateGrid(rightOrLeft);
 		drawTiles();
+		pl.update(tileSize);
+		pl.draw();
 		//draw something
 		EndDrawing();
 
@@ -54,7 +65,7 @@ void App::drawTiles()
 {
 	for (int i = 0; i < NUMBER_OF_TILES; i++)
 		for (int j = 0; j < NUMBER_OF_TILES; j++)
-			drawTile(grid[i][j], Vector2{ WIDTH + j * tileSize, HEIGHT + i * tileSize });
+			drawTile(grid[i][j], Vector2{ zeroW + j * tileSize, zeroH + i * tileSize });
 };
 
 void App::drawTile(int tile, Vector2 pos)
@@ -71,6 +82,9 @@ void App::drawTile(int tile, Vector2 pos)
 		break;
 	case 3:
 		// draw magnet pulling path
+		break;
+	case 4:
+		DrawRectangleV(pos, Vector2{ (float)tileSize, (float)tileSize }, GOLD);
 		break;
 	}
 }
