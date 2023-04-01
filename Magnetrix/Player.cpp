@@ -1,13 +1,15 @@
 #include "pch.hpp"
 #include "Player.hpp"
 
-Player::Player() : 
-	body(Rectangle()), texture(Texture2D()), speed(3), zeroW(0), zeroH(0), WIDTH(0), HEIGHT(0)
+Player::Player() :
+	zeroW(0), zeroH(0), WIDTH(0), HEIGHT(0),
+	body(Rectangle()), texture(Texture2D()), speed(3), gravity(10.f), noGravity(false), nGFcounter(0)
 {
 }
 
 Player::Player(float zeroW, float zeroH, float WIDTH, float HEIGHT, Rectangle body, Texture2D* texture) :
-	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), body(body), speed(3), gravity(1.5f)
+	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), 
+	body(body), speed(3), gravity(10.f), noGravity(false), nGFcounter(0)
 {                             
 	if (texture)
 		this->texture = *texture;
@@ -22,7 +24,7 @@ Player::~Player()
 void Player::update(int tileSize, short dir)
 {
 	checkInput();
-	body.y += gravity;
+	applyGravity();
 	checkCollision(tileSize);
 	rotate(dir);
 }
@@ -46,6 +48,20 @@ void Player::checkInput()
 	}
 }
 
+void Player::applyGravity()
+{
+	if (noGravity)
+		++nGFcounter;
+	else
+		body.y += gravity;
+
+	if (noGravity && nGFcounter == noGravityFrames)
+	{
+		noGravity = false;
+		nGFcounter = 0;
+	}
+}
+
 void Player::checkCollision(int tileSize)
 {
 	if (body.x < zeroW)
@@ -64,13 +80,16 @@ void Player::rotate(short dir)
 	if (dir == NO_ROTATE)
 		return;
 
+	noGravity = true;
+	nGFcounter = 0;
+
 	if (dir == RIGHT)
 	{
 		Vector2 n = { (zeroH + HEIGHT) - (body.y + body.height) + zeroW, body.x - zeroW + zeroH };
-		body = Rectangle{n.x, n.y, body.height, body.width };
+		body = Rectangle{n.x, n.y, body.width, body.height };
 		return;
 	}
 	Vector2 n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH};
-	body = Rectangle{ n.x, n.y, body.height, body.width };
+	body = Rectangle{ n.x, n.y, body.width, body.height };
 }
 

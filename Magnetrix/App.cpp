@@ -4,6 +4,7 @@
 App::App()
 {
 	InitWindow(0, 0, "Magnetrix");
+	SetTargetFPS(60);
 	ToggleFullscreen();
 
 	tileSize = GetScreenHeight() / 12.f;
