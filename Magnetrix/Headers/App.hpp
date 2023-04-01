@@ -12,10 +12,10 @@ private:
 
 	void drawTiles();
 	void drawTile(int tile, Vector2 pos);
-	void rotateGrid(short right);
+	void rotateGrid(short dir);
 
 	int tileSize;
-	short rightOrLeft;
+	short dir;
 	float zeroW, zeroH;
 	float WIDTH, HEIGHT;
 

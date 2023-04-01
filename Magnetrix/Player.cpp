@@ -8,7 +8,7 @@ Player::Player() :
 
 Player::Player(float zeroW, float zeroH, float WIDTH, float HEIGHT, Rectangle body, Texture2D* texture) :
 	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), body(body), speed(3)
-{
+{                             
 	if (texture)
 		this->texture = *texture;
 	else
@@ -19,10 +19,11 @@ Player::~Player()
 {
 }
 
-void Player::update(int tileSize)
+void Player::update(int tileSize, short dir)
 {
 	checkInput();
 	checkCollision(tileSize);
+	rotate(dir);
 }
 
 void Player::draw()
@@ -48,11 +49,27 @@ void Player::checkCollision(int tileSize)
 {
 	if (body.x < zeroW)
 		body.x = zeroW;
-	else if (body.x + body.width > WIDTH)
-		body.x = WIDTH - body.width;
+	else if (body.x + body.width > zeroW + WIDTH)
+		body.x = zeroW + WIDTH - body.width;
 
 	if (body.y < zeroH)
 		body.y = zeroH;
-	else if (body.y + body.height > HEIGHT)
-		body.y = HEIGHT - body.height;
+	else if (body.y + body.height > zeroH + HEIGHT)
+		body.y = zeroH + HEIGHT - body.height;
 }
+
+void Player::rotate(short dir)
+{
+	if (dir == NO_ROTATE)
+		return;
+
+	if (dir == RIGHT)
+	{
+		Vector2 n = { (zeroH + HEIGHT) - (body.y + body.height) + zeroW, body.x - zeroW + zeroH };
+		body = Rectangle{n.x, n.y, body.height, body.width };
+		return;
+	}
+	Vector2 n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH};
+	body = Rectangle{ n.x, n.y, body.height, body.width };
+}
+

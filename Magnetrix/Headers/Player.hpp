@@ -8,15 +8,16 @@ public:
 	~Player();
 
 	void draw();
-	void update(int tileSize);
+	void update(int tileSize, short dir);
 private:
 
 	Rectangle body;
 	Texture2D texture;
 	int speed;
 	float zeroW, zeroH;
-	float WIDTH, HEIGHT;
+	float WIDTH, HEIGHT; 
 
 	void checkInput();
 	void checkCollision(int tileSize);
+	void rotate(short direction);
 };

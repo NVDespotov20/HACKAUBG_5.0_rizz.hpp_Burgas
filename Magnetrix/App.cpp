@@ -7,13 +7,13 @@ App::App()
 	ToggleFullscreen();
 
 	tileSize = GetScreenHeight() / 12.f;
-	rightOrLeft = -1;
+	dir = NO_ROTATE;
 
 	zeroW = (GetScreenWidth() - NUMBER_OF_TILES * tileSize) / 2;
 	zeroH = (GetScreenHeight() - NUMBER_OF_TILES * tileSize) / 2;
 
-	WIDTH = zeroW + NUMBER_OF_TILES * tileSize;
-	HEIGHT = zeroH + NUMBER_OF_TILES * tileSize;
+	WIDTH  = NUMBER_OF_TILES * tileSize;
+	HEIGHT = NUMBER_OF_TILES * tileSize;
 
 	/*for (int i = 0; i < NUMBER_OF_TILES; i++)
 		for (int j = 0; j < NUMBER_OF_TILES; j++)
@@ -21,7 +21,7 @@ App::App()
 
 	pl = Player( zeroW, zeroH, WIDTH, HEIGHT,
 		Rectangle{zeroW - 1,
-		HEIGHT - 2 * tileSize,
+		zeroH + HEIGHT - 2 * tileSize,
 		(float)tileSize, 
 		(float)(tileSize * 2)
 		}, nullptr);
@@ -42,18 +42,19 @@ void App::loop()
 	{
 		BeginDrawing();
 		ClearBackground(RAYWHITE);
-		rightOrLeft = -1;
+
+		dir = NO_ROTATE;
 
 		if (IsKeyPressed(KEY_E))
-			rightOrLeft = 1;
+			dir = RIGHT;
 		else if (IsKeyPressed(KEY_Q))
-			rightOrLeft = 0;
+			dir = LEFT;
 
 		DrawTexture(bgTexture, 0, 0, WHITE);
 
-		rotateGrid(rightOrLeft);
+		rotateGrid(dir);
 		drawTiles();
-		pl.update(tileSize);
+		pl.update(tileSize, dir);
 		pl.draw();
 		//draw something
 		EndDrawing();
@@ -88,9 +89,9 @@ void App::drawTile(int tile, Vector2 pos)
 		break;
 	}
 }
-void App::rotateGrid(short right)
+void App::rotateGrid(short dir)
 {
-	if (right == -1)
+	if (dir == NO_ROTATE)
 		return;
 
 	int tmp[NUMBER_OF_TILES][NUMBER_OF_TILES];
@@ -99,14 +100,14 @@ void App::rotateGrid(short right)
 		for (int j = 0; j < NUMBER_OF_TILES; ++j)
 			tmp[i][j] = grid[i][j];
 
-	if (right)
+	if (dir == RIGHT)
 	{
 		for (int i = 0; i < NUMBER_OF_TILES; ++i)
 			for (int j = NUMBER_OF_TILES - 1, k = 0; j >= 0 && k < NUMBER_OF_TILES; --j, ++k)
 				grid[i][j] = tmp[k][i];
 		return;
 	}
-
+	// dir == LEFT
 	for (int i = NUMBER_OF_TILES - 1, k = 0; i >= 0 && k < NUMBER_OF_TILES; --i, ++k)
 		for (int j = NUMBER_OF_TILES - 1; j >= 0 ; --j)
 			grid[i][j] = tmp[j][k];
