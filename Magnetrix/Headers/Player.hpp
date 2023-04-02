@@ -14,7 +14,7 @@ private:
 	Rectangle body;
 	Texture2D texture;
 	int speed;
-	int noGravityFrames = 7;
+	int noGravityFrames = 10;
 	int nGFcounter;
 	bool noGravity;
 	float gravity;

@@ -8,9 +8,9 @@ Player::Player() :
 }
 
 Player::Player(float zeroW, float zeroH, float WIDTH, float HEIGHT, Rectangle body, Texture2D* texture) :
-	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT), 
+	zeroW(zeroW), zeroH(zeroH), WIDTH(WIDTH), HEIGHT(HEIGHT),
 	body(body), speed(3), gravity(10.f), noGravity(false), nGFcounter(0)
-{                             
+{
 	if (texture)
 		this->texture = *texture;
 	else
@@ -36,7 +36,7 @@ void Player::draw()
 
 void Player::checkInput()
 {
-	if (IsKeyDown(KEY_A)) 
+	if (IsKeyDown(KEY_A))
 	{
 		body.x -= GetFrameTime() * body.width * speed;
 		return;
@@ -77,19 +77,54 @@ void Player::checkCollision(int tileSize)
 
 void Player::rotate(short dir)
 {
-	if (dir == NO_ROTATE)
+	if (!dir)
 		return;
-
 	noGravity = true;
-	nGFcounter = 0;
+	nGFcounter = 1;
 
+	static short orientation = 3;
+
+	orientation += dir;
+	if (orientation == 4) orientation = 0;
+	else if (orientation == -1) orientation = 3;
 	if (dir == RIGHT)
 	{
 		Vector2 n = { (zeroH + HEIGHT) - (body.y + body.height) + zeroW, body.x - zeroW + zeroH };
-		body = Rectangle{n.x, n.y, body.width, body.height };
+		switch (orientation)
+		{
+		case 1:
+			n = { (zeroH + HEIGHT) - (body.y + body.width) + zeroW, body.x - zeroW + zeroH };
+			break;
+
+		case 2:
+			n = { (zeroH + HEIGHT) - (body.y + body.width) + zeroW, body.x  - body.width - zeroW + zeroH };
+			break;
+
+		case 3:
+			n = { (zeroH + HEIGHT) - (body.y + body.height) + zeroW, body.x - body.width - zeroW + zeroH };
+			break;
+		}
+
+		body = Rectangle{ n.x, n.y, body.width, body.height };
 		return;
 	}
-	Vector2 n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH};
+
+	Vector2	n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH };
+	
+	switch (orientation)
+	{
+	case 1:
+		n = { body.y - zeroH + body.width + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH };
+		break;
+
+	case 2:
+		n = { body.y - zeroH + body.width + zeroW, (zeroW + WIDTH) - (body.x + body.height) + zeroH };
+		break;
+
+	case 3:
+		n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.height) + zeroH };
+		break;
+	}
 	body = Rectangle{ n.x, n.y, body.width, body.height };
 }
 

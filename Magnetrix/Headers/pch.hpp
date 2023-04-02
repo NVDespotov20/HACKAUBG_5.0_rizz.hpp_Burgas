@@ -5,7 +5,7 @@
 #define NUMBER_OF_TILES 10
 
 enum direction {
-	NO_ROTATE = -1,
-	LEFT = 0,
+	NO_ROTATE = 0,
+	LEFT = -1,
 	RIGHT = 1
 };
