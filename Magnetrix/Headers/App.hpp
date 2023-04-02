@@ -15,17 +15,12 @@ private:
 	void drawTiles();
 	void drawTile(int tile, Vector2 pos);
 	void rotateGrid(short dir);
-<<<<<<< Updated upstream
 	void checkCollisionGrid();
-	float tileSize;
-=======
 
 	Button backButton;
 	int fontSize;
 	Vector2 mousePoint;
-
-	int tileSize;
->>>>>>> Stashed changes
+	float tileSize;
 	short dir;
 	float zeroW, zeroH;
 	float WIDTH, HEIGHT;
