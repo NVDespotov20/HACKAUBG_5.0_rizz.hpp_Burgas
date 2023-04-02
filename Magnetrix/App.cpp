@@ -5,7 +5,7 @@ App::App()
 {
 	InitWindow(0, 0, "Magnetrix");
 	SetTargetFPS(60);
-	ToggleFullscreen();
+	//ToggleFullscreen();
 
 	tileSize = GetScreenHeight() / 12.f;
 	dir = NO_ROTATE;
@@ -13,17 +13,17 @@ App::App()
 	zeroW = (GetScreenWidth() - NUMBER_OF_TILES * tileSize) / 2;
 	zeroH = (GetScreenHeight() - NUMBER_OF_TILES * tileSize) / 2;
 
-	WIDTH  = NUMBER_OF_TILES * tileSize;
+	WIDTH = NUMBER_OF_TILES * tileSize;
 	HEIGHT = NUMBER_OF_TILES * tileSize;
 
 	/*for (int i = 0; i < NUMBER_OF_TILES; i++)
 		for (int j = 0; j < NUMBER_OF_TILES; j++)
 			grid[i][j] = 0;*/
 
-	pl = Player( zeroW, zeroH, WIDTH, HEIGHT,
-		Rectangle{zeroW - 1,
+	pl = Player(zeroW, zeroH, WIDTH, HEIGHT,
+		Rectangle{ zeroW - 1,
 		zeroH + HEIGHT - 2 * tileSize,
-		(float)tileSize, 
+		(float)tileSize,
 		(float)(tileSize * 2)
 		}, nullptr);
 
@@ -56,6 +56,7 @@ void App::loop()
 		rotateGrid(dir);
 		drawTiles();
 		pl.update(tileSize, dir);
+		checkCollisionGrid();
 		pl.draw();
 		//draw something
 		EndDrawing();
@@ -110,6 +111,17 @@ void App::rotateGrid(short dir)
 	}
 	// dir == LEFT
 	for (int i = NUMBER_OF_TILES - 1, k = 0; i >= 0 && k < NUMBER_OF_TILES; --i, ++k)
-		for (int j = NUMBER_OF_TILES - 1; j >= 0 ; --j)
+		for (int j = NUMBER_OF_TILES - 1; j >= 0; --j)
 			grid[i][j] = tmp[j][k];
+}
+
+void App::checkCollisionGrid()
+{
+	int x[4],y[4];
+	pl.getPosInGrid(x, y, tileSize);
+
+	if (grid[y[0]][x[0]] != 0 && grid[y[0]][x[0]] != 4) { pl.setbackPos(x[0], y[0], tileSize); }
+	if (grid[y[1]][x[1]] != 0 && grid[y[1]][x[1]] != 4) { pl.setbackPos(x[1], y[1], tileSize); }
+	if (grid[y[2]][x[2]] != 0 && grid[y[2]][x[2]] != 4) { pl.setbackPos(x[2], y[2], tileSize); }
+	if (grid[y[3]][x[3]] != 0 && grid[y[3]][x[3]] != 4) { pl.setbackPos(x[3], y[3], tileSize); }
 }

@@ -29,6 +29,35 @@ void Player::update(int tileSize, short dir)
 	rotate(dir);
 }
 
+void Player::setbackPos(short x, short y, float tileSize)
+{
+	std::cout << body.x - zeroW << ", " << body.y - zeroH << "\n";
+	 if (body.x + body.width - zeroW > x * tileSize)
+		body.x = x * tileSize  -body.width + zeroW;
+	 else if(body.x - zeroW < (x+1) * tileSize  + 50)
+		body.x = (x+1) * tileSize + zeroW+50;
+
+	/*if (body.y + body.height - zeroW > y * tileSize)
+		body.y = y * tileSize - tileSize + zeroH - body.height - 2;
+	else
+		body.y = y * tileSize + tileSize + zeroH + 2;*/
+}
+
+void Player::getPosInGrid(int x[4], int y[4], float tileSize)
+{
+	x[0] = floor((body.x - zeroW + .1f * body.width) / tileSize);
+	y[0] = floor((body.y - zeroH + .1f * body.height) / tileSize);
+
+	x[1] = ceil((body.x - zeroW + .1f * body.width) / tileSize);
+	y[1] = floor((body.y - zeroH + .1f * body.height) / tileSize);
+
+	x[2] = floor((body.x - zeroW + .1f * body.width) / tileSize);
+	y[2] = ceil((body.y - zeroH + .1f * body.height) / tileSize);
+
+	x[3] = ceil((body.x - zeroW + .1f * body.width) / tileSize);
+	y[3] = ceil((body.y - zeroH + .1f * body.height) / tileSize);
+}
+
 void Player::draw()
 {
 	DrawRectangleRec(body, PURPLE);
@@ -36,6 +65,7 @@ void Player::draw()
 
 void Player::checkInput()
 {
+
 	if (IsKeyDown(KEY_A))
 	{
 		body.x -= GetFrameTime() * body.width * speed;
@@ -97,7 +127,7 @@ void Player::rotate(short dir)
 			break;
 
 		case 2:
-			n = { (zeroH + HEIGHT) - (body.y + body.width) + zeroW, body.x  - body.width - zeroW + zeroH };
+			n = { (zeroH + HEIGHT) - (body.y + body.width) + zeroW, body.x - body.width - zeroW + zeroH };
 			break;
 
 		case 3:
@@ -110,7 +140,7 @@ void Player::rotate(short dir)
 	}
 
 	Vector2	n = { body.y - zeroH + zeroW, (zeroW + WIDTH) - (body.x + body.width) + zeroH };
-	
+
 	switch (orientation)
 	{
 	case 1:
