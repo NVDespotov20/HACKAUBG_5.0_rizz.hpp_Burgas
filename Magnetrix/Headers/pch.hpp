@@ -2,6 +2,7 @@
 #include <iostream>
 #include <raylib.hpp>
 #include <vector>
+#include <fstream>
 
 #define NUMBER_OF_TILES 10
 

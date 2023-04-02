@@ -31,16 +31,6 @@ void Player::update(int tileSize, short dir)
 
 void Player::setbackPos(short x, short y, float tileSize)
 {
-	std::cout << body.x - zeroW << ", " << body.y - zeroH << "\n";
-	 if (body.x + body.width - zeroW > x * tileSize)
-		body.x = x * tileSize  -body.width + zeroW;
-	 else if(body.x - zeroW < (x+1) * tileSize  + 50)
-		body.x = (x+1) * tileSize + zeroW+50;
-
-	/*if (body.y + body.height - zeroW > y * tileSize)
-		body.y = y * tileSize - tileSize + zeroH - body.height - 2;
-	else
-		body.y = y * tileSize + tileSize + zeroH + 2;*/
 }
 
 void Player::getPosInGrid(int x[4], int y[4], float tileSize)

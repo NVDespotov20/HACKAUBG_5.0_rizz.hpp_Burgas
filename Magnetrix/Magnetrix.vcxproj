@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\App.hpp" />
     <ClInclude Include="Headers\Button.hpp" />
+    <ClInclude Include="Headers\FileReader.hpp" />
     <ClInclude Include="Headers\GameManager.hpp" />
     <ClInclude Include="Headers\Menu.hpp" />
     <ClInclude Include="Headers\Navigator.hpp" />

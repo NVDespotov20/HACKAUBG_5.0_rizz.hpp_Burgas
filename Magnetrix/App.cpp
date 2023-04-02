@@ -1,9 +1,10 @@
 #include "pch.hpp"
 #include "App.hpp"
+#include "FileReader.hpp"
 
 App::App()
 {
-	
+	mousePoint = { 0,0 };
 	HEIGHT = 1080;
 	WIDTH = 1920;
 	tileSize = GetScreenHeight() / 12.f;
@@ -16,9 +17,8 @@ App::App()
 	WIDTH = NUMBER_OF_TILES * tileSize;
 	HEIGHT = NUMBER_OF_TILES * tileSize;
 
-	/*for (int i = 0; i < NUMBER_OF_TILES; i++)
-		for (int j = 0; j < NUMBER_OF_TILES; j++)
-			grid[i][j] = 0;*/
+	setLevel.openFile("level0.txt"); 
+	setLevel.getText(grid);
 
 	pl = Player(zeroW, zeroH, WIDTH, HEIGHT,
 		Rectangle{ zeroW - 1,
@@ -57,10 +57,11 @@ void App::loop()
 
 	DrawTexture(bgTexture, 0, 0, WHITE);
 	backButton.draw(0.4f, 1, RED, BLACK);
-
+	DrawText(TextFormat("Mouse: %f, %f", mousePoint.x, mousePoint.y), 0, 50, 40, BLACK);
 	rotateGrid(dir);
 	drawTiles();
 	pl.update(tileSize, dir);
+	checkCollisionGrid();
 	pl.draw();
 		
 }
@@ -120,9 +121,37 @@ void App::checkCollisionGrid()
 {
 	int x[4],y[4];
 	pl.getPosInGrid(x, y, tileSize);
+	for (int i = 0; i < 4; ++i)
+		std::cout << "x" << i << ": " << x[i] << ", y" << i << ": " << y[i]<< '\n';
 
-	if (grid[y[0]][x[0]] != 0 && grid[y[0]][x[0]] != 4) { pl.setbackPos(x[0], y[0], tileSize); }
-	if (grid[y[1]][x[1]] != 0 && grid[y[1]][x[1]] != 4) { pl.setbackPos(x[1], y[1], tileSize); }
-	if (grid[y[2]][x[2]] != 0 && grid[y[2]][x[2]] != 4) { pl.setbackPos(x[2], y[2], tileSize); }
-	if (grid[y[3]][x[3]] != 0 && grid[y[3]][x[3]] != 4) { pl.setbackPos(x[3], y[3], tileSize); }
+	if (grid[y[0]][x[0]] != 0 && grid[y[0]][x[0]] != 4) // Top left
+	{ 
+		if (pl.body.x - zeroW > (x[0]) * tileSize)
+			pl.body.x = (x[0] + 1) * tileSize + zeroW;
+		//else if (pl.body.y - zeroH > y[0] * tileSize)
+			//pl.body.y = (x[0] + 1) * tileSize + zeroH;
+	}
+	if (grid[y[1]][x[1]] != 0 && grid[y[1]][x[1]] != 4) // Top right
+	{ 
+		if (pl.body.x + pl.body.width - zeroW > (x[0]) * tileSize)
+			pl.body.x = (x[0]) * tileSize + zeroW - 5;
+		//else if (pl.body.y - zeroH > y[0] * tileSize)
+			//pl.body.y = (x[0] + 1) * tileSize + zeroH;
+	}
+	if (grid[y[2] + 1][x[2]] != 0 && grid[y[2]][x[2]] != 4) // Bottom left
+	{
+		if (pl.body.x - zeroW > (x[0]) * tileSize && ((grid[y[2]+1][x[2]] != 1 && y[2] + 1 != NUMBER_OF_TILES)))
+			pl.body.x = (x[0] + 1) * tileSize + zeroW;
+
+		 if (pl.body.y + pl.body.height - zeroH > (y[0]) * tileSize)
+			pl.body.y = (y[0]) * tileSize + zeroH - 1;
+
+	}
+	if (grid[y[3]][x[3]] != 0 && grid[y[3]][x[3]] != 4) // Bottom right
+	{ 
+		if (pl.body.x + pl.body.width - zeroW > (x[0]) * tileSize)
+			pl.body.x = (x[0]) * tileSize + zeroW - 5;
+		//else if (pl.body.y + pl.body.height - zeroH > (y[0]- 1) * tileSize)
+			//pl.body.y = (y[0]-1) * tileSize + zeroH - 5;
+	}
 }

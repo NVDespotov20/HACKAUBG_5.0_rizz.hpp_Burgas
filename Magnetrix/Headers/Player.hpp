@@ -12,6 +12,7 @@ public:
 	void setbackPos(short x, short y, float tileSize);
 	void getPosInGrid(int x[4], int y[4], float tileSize);
 	Rectangle body;
+	float gravity;
 private:
 
 	Texture2D texture;
@@ -19,7 +20,6 @@ private:
 	int noGravityFrames = 10;
 	int nGFcounter;
 	bool noGravity;
-	float gravity;
 	float zeroW, zeroH;
 	float WIDTH, HEIGHT; 
 	void checkInput();
