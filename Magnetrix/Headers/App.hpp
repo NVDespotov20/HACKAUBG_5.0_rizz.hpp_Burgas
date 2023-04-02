@@ -12,11 +12,11 @@ public:
 	void loop();
 
 private:
-
+	void setCurrentLevel(int l);
 	void drawTiles();
 	void drawTile(int tile, Vector2 pos);
 	void rotateGrid(short dir);
-	void checkCollisionGrid();
+	bool checkCollisionGrid();
 
 	FileReader setLevel;
 	Button backButton;
@@ -29,7 +29,7 @@ private:
 	float zeroW, zeroH;
 	float WIDTH, HEIGHT;
 	int grid[NUMBER_OF_TILES][NUMBER_OF_TILES];
-
+	int level, levelEndTimer;
 	Texture2D tileTexture;
 	Texture2D bgTexture;
 	Player pl;

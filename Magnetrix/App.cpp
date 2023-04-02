@@ -16,9 +16,9 @@ App::App()
 
 	WIDTH = NUMBER_OF_TILES * tileSize;
 	HEIGHT = NUMBER_OF_TILES * tileSize;
-
-	setLevel.openFile("level0.txt"); 
-	setLevel.getText(grid);
+	level = 0;
+	levelEndTimer = 0;
+	setCurrentLevel(level);
 
 	pl = Player(zeroW, zeroH, WIDTH, HEIGHT,
 		Rectangle{ zeroW - 1,
@@ -37,6 +37,12 @@ App::~App()
 	
 
 }
+void App::setCurrentLevel(int l)
+{
+	setLevel.openFile(TextFormat("./levels/%i.txt", l));
+	setLevel.getText(grid);
+}
+
 void App::loop()
 {
 
@@ -57,12 +63,22 @@ void App::loop()
 
 	DrawTexture(bgTexture, 0, 0, WHITE);
 	backButton.draw(0.4f, 1, RED, BLACK);
-	DrawText(TextFormat("Mouse: %f, %f", mousePoint.x, mousePoint.y), 0, 50, 40, BLACK);
 	rotateGrid(dir);
 	drawTiles();
 	pl.update(tileSize, dir);
-	checkCollisionGrid();
 	pl.draw();
+	if (checkCollisionGrid() || levelEndTimer)
+	{
+		if(checkCollisionGrid()) levelEndTimer = 60;
+		DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), YELLOW);
+		DrawText("Good job! Onto the next level!",
+			GetScreenWidth() / 2 - MeasureTextEx(GetFontDefault(),"Good job! Onto the next level!", 60, 1 ).x/ 2, 
+			GetScreenHeight() / 2 - MeasureTextEx(GetFontDefault(), "Good job! Onto the next level!", 60, 1).y / 2, 60, BLACK);
+		if(levelEndTimer == 60) setCurrentLevel(++level);
+		pl.body.x = zeroW - 1;
+		pl.body.y = zeroH + HEIGHT - 2 * tileSize;
+		--levelEndTimer;
+	}
 		
 }
 
@@ -117,7 +133,7 @@ void App::rotateGrid(short dir)
 			grid[i][j] = tmp[j][k];
 }
 
-void App::checkCollisionGrid()
+bool App::checkCollisionGrid()
 {
 	int x[4],y[4];
 	pl.getPosInGrid(x, y, tileSize);
@@ -138,8 +154,10 @@ void App::checkCollisionGrid()
 		//else if (pl.body.y - zeroH > y[0] * tileSize)
 			//pl.body.y = (x[0] + 1) * tileSize + zeroH;
 	}
-	if (grid[y[2] + 1][x[2]] != 0 && grid[y[2]][x[2]] != 4) // Bottom left
+	if (grid[y[2] + 1][x[2]] != 0) // Bottom left
 	{
+		if (grid[y[2] + 1][x[2]] == 4 && y[2] + 1 != NUMBER_OF_TILES )
+			return 1;
 		if (pl.body.x - zeroW > (x[0]) * tileSize && ((grid[y[2]+1][x[2]] != 1 && y[2] + 1 != NUMBER_OF_TILES)))
 			pl.body.x = (x[0] + 1) * tileSize + zeroW;
 
@@ -154,4 +172,5 @@ void App::checkCollisionGrid()
 		//else if (pl.body.y + pl.body.height - zeroH > (y[0]- 1) * tileSize)
 			//pl.body.y = (y[0]-1) * tileSize + zeroH - 5;
 	}
+	return false;
 }
