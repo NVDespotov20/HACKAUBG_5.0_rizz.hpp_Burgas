@@ -144,7 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Navigator.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.hpp</PrecompiledHeaderFile>
@@ -156,6 +160,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\App.hpp" />
+    <ClInclude Include="Headers\Button.hpp" />
+    <ClInclude Include="Headers\GameManager.hpp" />
+    <ClInclude Include="Headers\Menu.hpp" />
+    <ClInclude Include="Headers\Navigator.hpp" />
     <ClInclude Include="Headers\pch.hpp" />
     <ClInclude Include="Headers\Player.hpp" />
     <ClInclude Include="Headers\Tile.hpp" />

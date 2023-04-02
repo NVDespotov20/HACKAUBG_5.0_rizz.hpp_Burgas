@@ -1,8 +1,8 @@
 #include "pch.hpp"
-#include "App.hpp"
+#include "Gamemanager.hpp"
 
 int main()
 {
-	App main;
-	main.loop();
+	GameManager manager;
+	manager.start();
 }

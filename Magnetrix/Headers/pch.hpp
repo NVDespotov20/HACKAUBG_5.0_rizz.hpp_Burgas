@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include <raylib.hpp>
+#include <vector>
 
 #define NUMBER_OF_TILES 10
 

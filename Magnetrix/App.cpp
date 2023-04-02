@@ -3,13 +3,19 @@
 
 App::App()
 {
+<<<<<<< Updated upstream
 	InitWindow(0, 0, "Magnetrix");
 	SetTargetFPS(60);
 	//ToggleFullscreen();
 
+=======
+	HEIGHT = 1080;
+	WIDTH = 1920;
+>>>>>>> Stashed changes
 	tileSize = GetScreenHeight() / 12.f;
 	dir = NO_ROTATE;
-
+	fontSize = HEIGHT / 36;
+	backButton = Button("Menu", 0, 0, HEIGHT / 8, HEIGHT / 21.6, fontSize);
 	zeroW = (GetScreenWidth() - NUMBER_OF_TILES * tileSize) / 2;
 	zeroH = (GetScreenHeight() - NUMBER_OF_TILES * tileSize) / 2;
 
@@ -34,13 +40,17 @@ App::~App()
 {
 	UnloadTexture(tileTexture);
 	UnloadTexture(bgTexture);
-	CloseWindow();
+	
 
 }
 void App::loop()
 {
-	while (!WindowShouldClose())
+
+	//back button
+	mousePoint = GetMousePosition();
+	if (CheckCollisionPointRec(mousePoint, backButton.getBoundingBox()) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 	{
+<<<<<<< Updated upstream
 		BeginDrawing();
 		ClearBackground(RAYWHITE);
 
@@ -61,7 +71,27 @@ void App::loop()
 		//draw something
 		EndDrawing();
 
+=======
+		auto manager = Navigator::getInstantiation();
+		manager->dir = Navigator::Navigate::MENU;
+>>>>>>> Stashed changes
 	}
+
+	dir = NO_ROTATE;
+
+	if (IsKeyPressed(KEY_E))
+		dir = RIGHT;
+	else if (IsKeyPressed(KEY_Q))
+		dir = LEFT;
+
+	DrawTexture(bgTexture, 0, 0, WHITE);
+	backButton.draw(0.4f, 1, RED, BLACK);
+
+	rotateGrid(dir);
+	drawTiles();
+	pl.update(tileSize, dir);
+	pl.draw();
+		
 }
 
 void App::drawTiles()
