@@ -1,4 +1,3 @@
-```
 # Team "rizz.hpp"
 
 <p align = "center">
@@ -51,4 +50,3 @@
 - <a href = "https://github.com/NVDespotov20"> Nikolay Despotov </a> (Back-end Developer)
 - <a href = "https://github.com/IATsrangalov20"> Ivan Tsrangalov </a> (Front-end Developer)
 - <a href = "https://github.com/HHChandar20"> Hakan Chandar </a> (Front-end Developer)
-```
